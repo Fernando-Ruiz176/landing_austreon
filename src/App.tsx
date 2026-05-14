@@ -1,140 +1,84 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Bot, LineChart, Cpu, ArrowRight, ExternalLink, Github, Linkedin, Twitter, ChevronDown } from 'lucide-react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, LineChart, Cpu, ArrowRight, ExternalLink, Github, Linkedin, Twitter, ChevronDown, ShieldCheck, Clock, BrainCircuit } from 'lucide-react';
 
-// Particle Network Component
-const ParticleNetwork = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+// Hero Carousel Slide Data
+const heroSlides = [
+  {
+    image: '/hero_slide_1.png',
+    label: 'La Inteligencia Operativa',
+    title: 'IA que Redefine su Rentabilidad Operativa',
+    subtitle: 'Automatización Inteligente & Arquitecturas de Alto Impacto.',
+    description: 'Optimizamos su flujo operativo con ecosistemas autónomos basados en IA y computación sintética. Transformamos procesos complejos en sistemas de alto rendimiento que anticipan el mercado y maximizan la utilidad de su empresa.',
+    cta: 'Explorar Soluciones',
+    ctaLink: '#pilares',
+  },
+  {
+    image: '/hero_slide_2.png',
+    label: 'Infraestructura de Ejecución Global',
+    title: 'Ingeniería de Clase Mundial para Mercados Locales',
+    subtitle: 'Células Técnicas internacionales, Dirección Estratégica en Chile.',
+    description: 'Acceda a la potencia de equipos técnicos de élite a través de nuestras alianzas estratégicas internacionales. Implementamos soporte de ingeniería y analítica de datos remota con la agilidad que exigen los sectores más competitivos del país.',
+    cta: 'Ver Modelos de Staffing',
+    ctaLink: '#alianzas',
+  },
+  {
+    image: '/hero_slide_3.png',
+    label: 'Innovación en Sectores Estratégicos',
+    title: 'Tecnología de Punta para el ADN Productivo de Chile',
+    subtitle: 'Soluciones para distintos sectores e industrias del sur.',
+    description: 'Diseñamos soluciones predictivas y de automatización para optimizar la cadena de valor. Transformamos procesos complejos en ecosistemas eficientes de alto rendimiento.',
+    cta: 'Descubrir Potencial Industrial',
+    ctaLink: '#proyectos',
+  },
+  {
+    image: '/hero_slide_4.png',
+    label: 'Transparencia y Blindaje',
+    title: 'Gobernanza de Datos y Blindaje Legal Integral',
+    subtitle: 'Ciberseguridad Avanzada y Propiedad Intelectual Soberana.',
+    description: 'Garantizamos la soberanía de sus datos sensibles mediante auditoría informática y ciberseguridad avanzada. Aseguramos que cada desarrollo y patente generada sea un activo protegido por una estructura legal blindada.',
+    cta: 'Conocer nuestro Respaldo',
+    ctaLink: '#roadmap',
+  },
+];
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-    
-    let mouse = { x: -1000, y: -1000 };
-
-    class Particle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 1.5;
-        this.vy = (Math.random() - 0.5) * 1.5;
-        this.radius = Math.random() * 1.5 + 0.5;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > height) this.vy = -this.vy;
-
-        // Mouse interaction
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          const force = (150 - dist) / 150;
-          this.x -= dx * force * 0.05;
-          this.y -= dy * force * 0.05;
-        }
-      }
-
-      draw() {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
-        ctx.fill();
-      }
-    }
-
-    let particles: Particle[] = [];
-
-    const init = () => {
-      particles = [];
-      const numParticles = Math.floor((width * height) / 12000); // Responsive density
-      for (let i = 0; i < numParticles; i++) {
-        particles.push(new Particle());
-      }
-    };
-
-    const animate = () => {
-      ctx.clearRect(0, 0, width, height);
-      
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(animate);
-    };
-
-    init();
-    animate();
-
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      init();
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
-
-    const handleMouseLeave = () => {
-      mouse.x = -1000;
-      mouse.y = -1000;
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-
-  return (
-    <canvas 
-      ref={canvasRef} 
-      className="absolute inset-0 z-0 opacity-50 pointer-events-none"
-    />
-  );
-};
+const SLIDE_INTERVAL = 8500; // ms
 
 function App() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isNavScrolled, setIsNavScrolled] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Auto-advance carousel
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, SLIDE_INTERVAL);
+  }, []);
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetTimer]);
+
+  // Navbar scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavScrolled(window.scrollY > 60);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    resetTimer();
+  };
 
   const projects = [
     { id: 1, title: 'Nexus Trading Engine', status: 'Live', tech: 'Rust / TypeScript', impact: 'Latencia reducida a <1ms', category: 'Arquitectura', desc: 'Motor de alta frecuencia especializado en arbitraje criptográfico. Implementa estructuras de datos lock-free para asegurar ejecución en microsegundos.' },
@@ -148,12 +92,16 @@ function App() {
     <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-[#00F0FF]/30 font-sans">
       
       {/* Navbar */}
-      <nav className="fixed top-0 w-full p-6 flex justify-between items-center z-50 bg-[#0A0A0A]/80 backdrop-blur-md border-b border-white/5">
-        <div className="text-xl md:text-2xl font-bold tracking-tighter flex items-center gap-3">
-          <img src="/logo_austreon1.jpg" alt="Austreon Logo" className="h-10 w-auto object-contain rounded-md mix-blend-screen" />
-          AUSTREON
+      <nav className={`fixed top-0 w-full px-6 py-4 flex justify-between items-center z-50 transition-all duration-500 ${isNavScrolled ? 'bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]' : 'bg-transparent border-b border-transparent'}`}>
+        <div className="flex items-center gap-4">
+          <img src="/logo_austreon1.jpg" alt="Austreon Logo" className="h-12 w-auto object-contain rounded-lg mix-blend-screen" />
+          <div className="h-7 w-px bg-white/15" />
+          <span className="text-2xl md:text-[1.7rem] font-extrabold tracking-[0.12em] uppercase">
+            <span className="text-white">AUS</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#38bdf8]">TREON</span>
+          </span>
         </div>
-        <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
+        <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
           <a href="#pilares" className="hover:text-[#00F0FF] transition-colors">Ecosistema</a>
           <a href="#proyectos" className="hover:text-[#00F0FF] transition-colors">Proyectos</a>
           <a href="#alianzas" className="hover:text-[#00F0FF] transition-colors">Alianzas</a>
@@ -164,55 +112,109 @@ function App() {
         </button>
       </nav>
 
-      {/* Hero Section */}
-      <header className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
-        <ParticleNetwork />
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#00F0FF]/5 via-transparent to-[#0A0A0A] opacity-80" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00F0FF]/10 rounded-full blur-[150px]" />
+      {/* Hero Carousel Section */}
+      <header className="hero-carousel">
+        {/* Background Images */}
+        <AnimatePresence mode="sync">
+          {heroSlides.map((slide, index) => (
+            index === currentSlide && (
+              <motion.div
+                key={index}
+                className="hero-carousel__slide"
+                initial={{ opacity: 0, scale: 1.08 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: 'easeInOut' }}
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.label}
+                  className="hero-carousel__image"
+                />
+              </motion.div>
+            )
+          ))}
+        </AnimatePresence>
+
+        {/* Gradient Overlays */}
+        <div className="hero-carousel__overlay" />
+
+        {/* Slide Content */}
+        <div className="hero-carousel__content">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              className="hero-carousel__text-wrapper"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+            >
+              <span className="hero-carousel__label">
+                {heroSlides[currentSlide].label}
+              </span>
+              <h1 className="hero-carousel__title">
+                {heroSlides[currentSlide].title}
+              </h1>
+              <p className="hero-carousel__subtitle">
+                {heroSlides[currentSlide].subtitle}
+              </p>
+              <p className="hero-carousel__description">
+                {heroSlides[currentSlide].description}
+              </p>
+              <a
+                href={heroSlides[currentSlide].ctaLink}
+                className="hero-carousel__cta group"
+              >
+                {heroSlides[currentSlide].cta}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight">
-              Inteligencia Artificial que Redefine su <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-blue-600">Rentabilidad.</span>
-            </h1>
-          </motion.div>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-gray-400 text-lg md:text-2xl max-w-3xl mx-auto mb-10 font-light"
-          >
-            Optimizamos su flujo operativo con arquitecturas de automatización de alto impacto. Transformamos procesos complejos en sistemas autónomos de alto rendimiento.
-          </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-          >
-            <a href="#pilares" className="bg-[#00F0FF] hover:bg-[#00F0FF]/90 text-[#0A0A0A] px-8 py-4 rounded-full font-semibold flex items-center justify-center gap-2 group transition-all text-sm md:text-base w-full sm:w-auto shadow-[0_0_30px_rgba(0,240,255,0.3)]">
-              Explorar Soluciones de IA <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="#proyectos" className="border border-white/20 hover:border-[#00F0FF] hover:text-[#00F0FF] px-8 py-4 rounded-full font-medium transition-all text-sm md:text-base w-full sm:w-auto backdrop-blur-sm">
-              Ver Proyectos
-            </a>
-          </motion.div>
+        {/* Navigation Dots */}
+        <div className="hero-carousel__dots">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`hero-carousel__dot ${index === currentSlide ? 'hero-carousel__dot--active' : ''}`}
+              aria-label={`Ir al slide ${index + 1}`}
+            />
+          ))}
         </div>
-        
+
+        {/* Progress Bar */}
+        <div className="hero-carousel__progress-track">
+          <motion.div
+            className="hero-carousel__progress-bar"
+            key={currentSlide}
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: SLIDE_INTERVAL / 1000, ease: 'linear' }}
+          />
+        </div>
+
+        {/* Scroll Down Indicator */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 animate-bounce text-gray-500"
+          transition={{ delay: 1.5, duration: 1 }}
+          className="hero-carousel__scroll-indicator"
         >
           <ChevronDown className="w-6 h-6" />
+        </motion.div>
+
+        {/* Ethical Tech Badge */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-8 right-6 md:bottom-12 md:right-12 z-30 bg-[#0A0A0A]/60 backdrop-blur-md border border-[#00F0FF]/30 px-4 py-2.5 rounded-full flex items-center gap-2.5 shadow-[0_0_15px_rgba(0,240,255,0.15)] group hover:border-[#00F0FF]/60 hover:bg-[#0A0A0A]/80 transition-all cursor-default"
+        >
+          <ShieldCheck className="w-4 h-4 text-[#00F0FF]" />
+          <span className="text-xs font-semibold tracking-wide text-gray-200 group-hover:text-white transition-colors">TECNOLOGÍA ÉTICA</span>
         </motion.div>
       </header>
 
@@ -220,11 +222,13 @@ function App() {
       <section id="pilares" className="py-32 px-6 max-w-7xl mx-auto relative">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[100px] -z-10" />
         <h2 className="text-3xl md:text-5xl font-bold mb-16 text-center tracking-tight">Propuesta de <span className="text-[#00F0FF]">Valor</span></h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Usamos group/cards para detectar el hover general y atenuar el resto */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 group/cards">
           {[
-            { icon: <Bot className="w-6 h-6" />, title: "Automatización Inteligente", desc: "Eficiencia operativa sin precedentes mediante el despliegue de agentes autónomos especializados." },
-            { icon: <LineChart className="w-6 h-6" />, title: "Arquitectura de Mercados", desc: "Estructuras financieras de alta latencia optimizadas mediante algoritmos de nueva generación." },
-            { icon: <Cpu className="w-6 h-6" />, title: "IA Sintética", desc: "Generación y modelado de datos avanzados para la toma de decisiones predictivas." }
+            { icon: <Bot className="w-6 h-6 group-hover/card:animate-pulse" />, title: "Automatización Inteligente", desc: "Diseñamos ecosistemas autónomos que ejecutan tareas críticas con precisión algorítmica. Reducimos la fricción operativa mediante flujos de trabajo inteligentes que aprenden y se adaptan a la velocidad de su industria." },
+            { icon: <LineChart className="w-6 h-6 group-hover/card:animate-pulse" />, title: "Arquitectura de Mercados", desc: "Construimos la estructura técnica necesaria para el despliegue de soluciones de alto impacto. No solo consultamos; diseñamos el mapa de procesos, la integración de sistemas y la estrategia de ejecución para sectores productivos, industriales y de salud." },
+            { icon: <Cpu className="w-6 h-6 group-hover/card:animate-pulse" />, title: "IA Sintética & Analítica", desc: "Transformamos datos de alta densidad en activos de decisión. Implementamos capas de inteligencia sintética para el análisis predictivo y la optimización de resultados, garantizando una ventaja competitiva basada en evidencia digital." }
           ].map((item, i) => (
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
@@ -232,16 +236,126 @@ function App() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: i * 0.2 }}
               key={i} 
-              className="p-8 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/5 hover:border-[#00F0FF]/40 transition-all duration-500 group relative overflow-hidden"
+              /* Hover Effects: Translate Y, Shadow, Opacity logic for peers */
+              className="p-8 rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/5 transition-all duration-500 group/card relative overflow-hidden opacity-100 hover:!opacity-100 group-hover/cards:opacity-40 hover:-translate-y-3 hover:shadow-[0_20px_40px_-10px_rgba(0,240,255,0.15)] hover:border-[#00F0FF]/40 cursor-default"
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00F0FF]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center mb-6 text-[#00F0FF] group-hover:scale-110 group-hover:bg-[#00F0FF]/10 transition-all duration-300">
+              {/* Background Data Matrix Pattern (visible only on hover) */}
+              <div className="absolute inset-0 opacity-0 group-hover/card:opacity-10 transition-opacity duration-700 pointer-events-none" 
+                   style={{ backgroundImage: 'radial-gradient(circle at center, #00F0FF 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
+              />
+              
+              {/* Top border highlight on hover */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00F0FF]/50 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+              
+              <div className="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center mb-6 text-[#00F0FF] group-hover/card:scale-110 group-hover/card:bg-[#00F0FF]/10 transition-all duration-500 relative z-10">
                 {item.icon}
               </div>
-              <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-              <p className="text-gray-400 leading-relaxed text-sm">{item.desc}</p>
+              <h3 className="text-xl font-bold mb-4 relative z-10">{item.title}</h3>
+              <p className="text-gray-400 leading-relaxed text-sm relative z-10">{item.desc}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Vertical Salud */}
+      <section className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Image Side */}
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 group h-[400px] lg:h-[600px]">
+            <img 
+              src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+              alt="Dental Clinic Interface" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-60 mix-blend-luminosity"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+            <div className="absolute inset-0 bg-[#00F0FF]/10 mix-blend-overlay" />
+            
+            {/* Overlay Data Elements for tech feel */}
+            <div className="absolute top-6 left-6 bg-[#0A0A0A]/60 backdrop-blur-md border border-[#00F0FF]/30 rounded-xl p-5 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-pulse" />
+                <span className="text-xs font-mono text-[#00F0FF] tracking-wider">AUSTREON MED-OS</span>
+              </div>
+              <div className="h-1.5 w-32 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#00F0FF] to-blue-500 w-[85%]" />
+              </div>
+            </div>
+            
+            {/* Bottom floating metric */}
+            <div className="absolute bottom-6 right-6 bg-[#0A0A0A]/80 backdrop-blur-md border border-white/10 rounded-xl p-4 flex gap-4 items-center shadow-2xl">
+              <div className="w-10 h-10 rounded-full border-2 border-[#00F0FF] border-t-transparent animate-spin" />
+              <div>
+                <p className="text-[10px] text-gray-400 uppercase tracking-widest">Precisión Diagnóstica</p>
+                <p className="text-xl font-bold text-white">99.2%</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Text Side */}
+          <div>
+            <div className="inline-block px-3 py-1 mb-6 rounded-full border border-[#00F0FF]/30 bg-[#00F0FF]/5 text-[#00F0FF] text-xs font-bold tracking-widest uppercase">
+              Primer Despliegue Estratégico
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight">
+              Vertical Salud: La Eficiencia que Humaniza el <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-blue-600">Cuidado.</span>
+            </h2>
+            <p className="text-gray-400 text-lg md:text-xl mb-12 leading-relaxed font-light">
+              Nuestro primer despliegue estratégico se centra en la intersección de la medicina y la inteligencia de datos. En Austreon, hemos desarrollado un ecosistema capaz de transformar la gestión clínica en un proceso predictivo.
+            </p>
+
+            <div className="space-y-8">
+              {/* Point 1 */}
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="flex gap-5"
+              >
+                <div className="shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-[#00F0FF]/10 to-transparent border border-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">Optimización de Flujos</h4>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">Reducción de tiempos de espera mediante algoritmos de asignación inteligente.</p>
+                </div>
+              </motion.div>
+
+              {/* Point 2 */}
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="flex gap-5"
+              >
+                <div className="shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-[#00F0FF]/10 to-transparent border border-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
+                  <BrainCircuit className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">Análisis Predictivo</h4>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">Anticipación de necesidades de insumos y gestión de pacientes.</p>
+                </div>
+              </motion.div>
+
+              {/* Point 3 */}
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="flex gap-5"
+              >
+                <div className="shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-[#00F0FF]/10 to-transparent border border-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-2">Soberanía de Datos</h4>
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">Blindaje total de fichas clínicas bajo estándares de ciberseguridad avanzada.</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -378,9 +492,13 @@ function App() {
       <footer className="bg-[#050505] border-t border-white/5 pt-20 pb-10 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <div className="text-2xl font-bold tracking-tighter mb-4 flex items-center gap-3">
-              <img src="/logo_austreon1.jpg" alt="Austreon Logo" className="h-12 w-auto object-contain rounded-md mix-blend-screen" />
-              AUSTREON
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/logo_austreon1.jpg" alt="Austreon Logo" className="h-14 w-auto object-contain rounded-lg mix-blend-screen" />
+              <div className="h-8 w-px bg-white/15" />
+              <span className="text-2xl md:text-3xl font-extrabold tracking-[0.12em] uppercase">
+                <span className="text-white">AUS</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#38bdf8]">TREON</span>
+              </span>
             </div>
             <p className="text-gray-500 text-sm max-w-sm mb-6 leading-relaxed">
               Firma líder en automatizaciones de alto nivel, arquitectura de mercados financieros e Inteligencia Artificial Sintética.

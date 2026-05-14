@@ -59,7 +59,7 @@ Tres bloques interactivos con estética de "vidrio esmerilado" (glassmorphism):
 
 ---
 
-## 📋 Requisitos de Implementación para Antigravity
+## 📋 Requisitos de Implementación
 1. **Performance:** Puntuación de 90+ en Google Lighthouse (SEO, Accesibilidad, Rendimiento).
 2. **Responsividad:** Adaptabilidad perfecta desde monitores Ultrawide hasta dispositivos móviles.
 3. **Mantenibilidad:** Código modular donde cada sección de la landing sea un componente independiente.
