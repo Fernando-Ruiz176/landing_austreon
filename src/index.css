@@ -91,7 +91,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 2rem 5rem 2rem;
+  padding: 5rem 1rem 3rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-carousel__content {
+    padding: 6rem 2rem 5rem 2rem;
+  }
 }
 
 .hero-carousel__text-wrapper {
