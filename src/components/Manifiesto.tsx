@@ -1,12 +1,31 @@
+import { motion } from 'framer-motion'
+import { useLang } from '../context/LanguageContext'
+import { es } from '../translations/es'
+import { en } from '../translations/en'
+
 export default function Manifiesto() {
+  const { lang } = useLang()
+  const t = lang === 'es' ? es.manifiesto : en.manifiesto
+
   return (
-    <section className="py-16 md:py-24 px-4 md:px-6 max-w-4xl mx-auto text-center relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[200px] bg-blue-600/5 blur-[80px] -z-10 rounded-full" />
-      <h2 className="text-sm font-mono text-[#00F0FF] tracking-[0.3em] uppercase mb-6">NUESTRA GÉNESIS</h2>
-      <p className="text-lg md:text-3xl text-gray-300 font-light leading-relaxed mb-8">
-        "Nacimos de la necesidad de devolverle el control a las organizaciones. Austreon se fundó con una premisa inquebrantable: <strong className="text-white font-medium">los ecosistemas del mañana deben ser soberanos, autónomos y construidos para durar.</strong>"
-      </p>
-      <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">Lo que comenzó como un laboratorio de investigación en alta fidelidad de datos, evolucionó al entender que la verdadera innovación no está en la nube, sino en la arquitectura local estratégica. Hoy, somos los arquitectos que integran inteligencia sintética y hardware robusto para redefinir la eficiencia operativa donde más importa: en el corazón de la industria y la salud.</p>
+    <section className="py-24 md:py-40 px-4 md:px-6 max-w-5xl mx-auto text-center">
+      <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.6 }} className="text-xs font-mono text-[#0071e3] tracking-[0.22em] uppercase mb-8"
+      >
+        {t.label}
+      </motion.p>
+      <motion.blockquote initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.1 }}
+        className="text-2xl md:text-4xl font-semibold text-white tracking-[-0.04em] leading-[1.15] mb-10"
+      >
+        {t.quote}
+      </motion.blockquote>
+      <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+      >
+        {t.desc}
+      </motion.p>
     </section>
   )
 }

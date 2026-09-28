@@ -1,73 +1,83 @@
+import { motion } from 'framer-motion'
+import { SiHetzner, SiN8n, SiWhatsapp, SiDocker, SiAirtable } from '@icons-pack/react-simple-icons'
+import { useLang } from '../context/LanguageContext'
+import { es } from '../translations/es'
+import { en } from '../translations/en'
+
+// El paquete de íconos instalado no trae el logo de OpenAI (solo "OpenAI Gym", otro producto),
+// así que va como SVG suelto con el path oficial de la marca.
+function OpenAIIcon({ className }: { className?: string }) {
+  return (
+    <svg role="img" viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <title>OpenAI</title>
+      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.4592a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+    </svg>
+  )
+}
+
+const partners = [
+  { name: 'Hetzner', role: { es: 'Bare Metal & Cloud Infrastructure', en: 'Bare Metal & Cloud Infrastructure' }, logo: <SiHetzner className="w-8 h-8" /> },
+  { name: 'n8n', role: { es: 'Workflow Automation Engine', en: 'Workflow Automation Engine' }, logo: <SiN8n className="w-8 h-8" /> },
+  { name: 'WhatsApp', role: { es: 'Comunicación Omnicanal', en: 'Omnichannel Communication' }, logo: <SiWhatsapp className="w-8 h-8" /> },
+  { name: 'OpenAI', role: { es: 'Motor de Inteligencia Conversacional', en: 'Conversational AI Engine' }, logo: <OpenAIIcon className="w-8 h-8" /> },
+  { name: 'Airtable', role: { es: 'Base de Datos Operativa', en: 'Operational Database' }, logo: <SiAirtable className="w-8 h-8" /> },
+  // Se saco "Co-Engineering" (icono generico, sin alianza real detras). Confirmar con Fernando si hay una alianza real para poner aca.
+]
+
+const stack = [
+  { name: 'Docker', role: { es: 'Despliegue Local en Contenedores', en: 'Container & Local Deployment' }, logo: <SiDocker className="w-8 h-8" /> },
+  // Se saco "Oracle Cloud" -- nunca se uso, solo Hetzner.
+  // Se saco "Python" y "Kubernetes" -- no hay codigo en Python (es n8n, low-code) ni Kubernetes.
+]
+
 export default function Alianzas() {
-  const partners = [
-    {
-      name: 'Hetzner',
-      role: 'Bare Metal & Cloud Infrastructure',
-      logo: (
-        <svg viewBox="0 0 100 100" className="w-10 h-10" fill="currentColor">
-          <path d="M50 5L5 27.5v45L50 95l45-22.5v-45L50 5zm0 8.5l37.5 18.75v37.5L50 88.25 12.5 69.75v-37.5L50 13.5z"/>
-          <path d="M50 25L25 37.5v25L50 75l25-12.5v-25L50 25zm0 8l17.5 8.75v17.5L50 68 32.5 59.25V41.75L50 33z"/>
-        </svg>
-      ),
-      color: 'group-hover:text-red-500',
-    },
-    {
-      name: 'n8n',
-      role: 'Workflow Automation Engine',
-      logo: (
-        <svg viewBox="0 0 100 60" className="w-16 h-10" fill="currentColor">
-          <text x="0" y="48" fontSize="52" fontWeight="800" fontFamily="monospace">n8n</text>
-        </svg>
-      ),
-      color: 'group-hover:text-orange-500',
-    },
-    {
-      name: 'WhatsApp',
-      role: 'Omnichannel Communication',
-      logo: (
-        <svg viewBox="0 0 24 24" className="w-10 h-10" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-      ),
-      color: 'group-hover:text-green-500',
-    },
-    {
-      name: 'Co-Engineering',
-      role: 'International Strategic Alliances',
-      logo: (
-        <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
-        </svg>
-      ),
-      color: 'group-hover:text-[#00F0FF]',
-    },
-  ]
+  const { lang } = useLang()
+  const t = lang === 'es' ? es.alianzas : en.alianzas
 
   return (
-    <section id="alianzas" className="py-20 md:py-32 px-4 md:px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent border-y border-white/5 relative overflow-hidden">
-      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF]/20 to-transparent" />
-      <div className="max-w-5xl mx-auto text-center relative z-10">
-        <h2 className="text-2xl md:text-5xl font-bold mb-4 md:mb-6 tracking-tight">Alianzas Estratégicas</h2>
-        <p className="text-gray-400 text-sm md:text-base font-light mb-16 md:mb-24 max-w-2xl mx-auto">
-          "Nuestras soluciones se construyen sobre la infraestructura más robusta y segura a nivel global."
-        </p>
+    <section id="alianzas" className="py-24 md:py-36 px-4 md:px-6 max-w-7xl mx-auto">
+      <div className="text-center mb-16 md:mb-24">
+        <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.6 }} className="text-xs font-mono text-[#0071e3] tracking-[0.22em] uppercase mb-5"
+        >{t.label}</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="text-4xl md:text-5xl font-bold text-white tracking-[-0.04em]"
+        >{t.title}</motion.h2>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 items-center">
+      <div className="mb-6">
+        <p className="text-[10px] font-mono text-white/20 tracking-widest uppercase mb-4 px-1">{t.rowAlliances}</p>
+        <div className="grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-white/[0.06] border border-white/[0.06] rounded-3xl overflow-hidden">
           {partners.map((partner, i) => (
-            <div key={i} className={`group flex flex-col items-center gap-4 text-white/30 transition-all duration-500 hover:text-white cursor-default ${partner.color}`}>
-              <div className="h-12 flex items-center justify-center transition-all duration-500">
-                {partner.logo}
+            <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="group flex flex-col items-center justify-center gap-4 p-10 md:p-12 bg-[#000000] hover:bg-white/[0.03] transition-colors duration-300 cursor-default"
+            >
+              <div className="text-white/30 group-hover:text-white transition-colors duration-500">{partner.logo}</div>
+              <div className="text-center">
+                <p className="text-sm font-semibold text-white/50 group-hover:text-white transition-colors duration-400 mb-1">{partner.name}</p>
+                <p className="text-[10px] font-mono text-white/20 tracking-widest uppercase leading-relaxed group-hover:text-white/40 transition-colors duration-400">{partner.role[lang]}</p>
               </div>
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-sm font-semibold tracking-wide text-white/60 group-hover:text-white transition-colors duration-500">
-                  {partner.name}
-                </span>
-                <span className="text-[10px] font-mono tracking-widest uppercase text-white/30 group-hover:text-white/60 transition-colors duration-500 text-center leading-relaxed">
-                  {partner.role}
-                </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-[10px] font-mono text-white/20 tracking-widest uppercase mb-4 px-1">{t.rowStack}</p>
+        <div className="grid grid-cols-1 divide-y md:divide-y-0 divide-white/[0.06] border border-white/[0.06] rounded-3xl overflow-hidden">
+          {stack.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              transition={{ delay: i * 0.08 + 0.3, duration: 0.5 }}
+              className="group flex flex-col items-center justify-center gap-4 p-10 md:p-12 bg-[#000000] hover:bg-white/[0.03] transition-colors duration-300 cursor-default"
+            >
+              <div className="text-white/30 group-hover:text-white transition-colors duration-500">{item.logo}</div>
+              <div className="text-center">
+                <p className="text-sm font-semibold text-white/50 group-hover:text-white transition-colors duration-400 mb-1">{item.name}</p>
+                <p className="text-[10px] font-mono text-white/20 tracking-widest uppercase leading-relaxed group-hover:text-white/40 transition-colors duration-400">{item.role[lang]}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

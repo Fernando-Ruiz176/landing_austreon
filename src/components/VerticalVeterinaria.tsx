@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
-  Clock,
-  BrainCircuit,
+  PawPrint,
+  Siren,
   ShieldCheck,
   CheckCircle,
 } from 'lucide-react'
@@ -12,23 +12,24 @@ import { es } from '../translations/es'
 import { en } from '../translations/en'
 
 const icons = [
-  <Clock className="w-5 h-5" />,
-  <BrainCircuit className="w-5 h-5" />,
+  <PawPrint className="w-5 h-5" />,
+  <Siren className="w-5 h-5" />,
   <ShieldCheck className="w-5 h-5" />,
 ]
 
-export default function VerticalSalud() {
+export default function VerticalVeterinaria() {
   const { lang } = useLang()
-  const t = lang === 'es' ? es.verticalSalud : en.verticalSalud
+  const t = lang === 'es' ? es.verticalVeterinaria : en.verticalVeterinaria
 
   return (
-    <section className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto border-t border-white/5 relative">
+    <section id="veterinaria" className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto border-t border-white/5 relative">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
 
-        <div className="relative rounded-3xl overflow-hidden group h-[300px] md:h-[400px] lg:h-[600px]">
+        {/* Texto primero en el orden del DOM (aparece a la derecha en desktop), invirtiendo el layout de Vertical Salud */}
+        <div className="lg:order-2 relative rounded-3xl overflow-hidden group h-[300px] md:h-[400px] lg:h-[600px]">
           <img
-            src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-            alt="Dental Clinic Interface"
+            src="https://images.unsplash.com/photo-1770836037793-95bdbf190f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            alt="Veterinary Clinic Interface"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-75 grayscale"
           />
 
@@ -63,7 +64,7 @@ export default function VerticalSalud() {
           </div>
         </div>
 
-        <div>
+        <div className="lg:order-1">
           <div className="inline-block px-3 py-1 mb-6 rounded-full border border-white/10 bg-white/[0.04] text-[#0071e3] text-xs font-mono tracking-widest uppercase">
             {t.badge}
           </div>
@@ -83,7 +84,7 @@ export default function VerticalSalud() {
             {t.features.map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 + 0.1 }}
@@ -114,7 +115,7 @@ export default function VerticalSalud() {
             className="mt-10"
           >
             <a
-              href="https://dent.austreon.cl/"
+              href="https://vet.austreon.cl/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 bg-white text-black px-6 py-3 rounded-full text-sm font-medium hover:bg-white/90 active:scale-95 transition-all duration-200 group"
@@ -126,29 +127,6 @@ export default function VerticalSalud() {
           </motion.div>
         </div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.4 }}
-        className="mt-24 md:mt-32"
-      >
-        <div className="relative max-w-3xl mx-auto px-8 md:px-16 py-12 text-center">
-
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-px bg-[#0071e3]/40" />
-
-          <span className="block text-[#0071e3]/20 text-7xl font-serif leading-none mb-4 select-none">
-            "
-          </span>
-
-          <p className="text-white/70 text-lg md:text-2xl font-light tracking-[-0.02em] leading-relaxed">
-            {t.quote}
-          </p>
-
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px bg-[#0071e3]/40" />
-        </div>
-      </motion.div>
     </section>
   )
 }
